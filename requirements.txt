@@ -1,0 +1,4 @@
+openai
+llama-index
+PyQt5 
+PyInstaller 
