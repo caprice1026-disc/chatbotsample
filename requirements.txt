@@ -2,3 +2,7 @@ openai
 llama-index
 PyQt5 
 PyInstaller 
+pdfminer.six
+cx_Freeze
+logging
+sys
