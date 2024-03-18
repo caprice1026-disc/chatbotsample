@@ -58,6 +58,22 @@ class MainWindow(QMainWindow):
         config.read('config.ini')
         openai.api_key = config['DEFAULT']['OPENAI_API_KEY']
         # インデックスの初期化または読み込みをここに実装
+        PERSIST_DIR = ".bis"
+        # ストレージが既に存在するかチェック
+        if not os.path.exists(PERSIST_DIR):
+            logger.info("ストレージディレクトリが存在しません。インデックスを生成します。")
+            # この部分をUIからのファイル選択に置き換える
+            documents = SimpleDirectoryReader("./input").load_data()
+            index = VectorStoreIndex.from_documents(documents)
+    # ストレージに保存
+            index.storage_context.persist(persist_dir=PERSIST_DIR)
+        else:
+            logger.info("既存のストレージディレクトリからインデックスをロードします。")
+            # 既存のインデックスをロード
+            storage_context = StorageContext.from_defaults(persist_dir=PERSIST_DIR)
+            index = load_index_from_storage(storage_context)
+        self.index = index
+        
 
     def openFileNameDialog(self):
         options = QFileDialog.Options()
